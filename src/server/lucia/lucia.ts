@@ -16,7 +16,7 @@ export const LuciaInit = new Lucia(DbAdapter, {
 })
 
 
-const useLuciaSession = cache(async () => {
+const LuciaSession = cache(async () => {
   const cookie = await cookies();
   const sessionId = cookie.get(LuciaInit.sessionCookieName)?.value ?? null;
 
@@ -43,10 +43,30 @@ const useLuciaSession = cache(async () => {
 })
 
 export async function useSession() {
-  const LuciaSession = await useLuciaSession();
+  const Session = await LuciaSession();
   return {
-    user: LuciaSession?.user,
-    session: LuciaSession?.session
+    user: Session?.user,
+    session: Session?.session
   }
 }
 
+
+
+export async function getSession() {
+  const cookieStore = await cookies();
+  const sessionId = cookieStore.get(LuciaInit.sessionCookieName)?.value ?? null;
+
+  if (!sessionId) return null;
+
+  const { user, session } = await LuciaInit.validateSession(sessionId);
+
+  if (session && session.fresh) {
+    const sessionCookie = LuciaInit.createSessionCookie(session.id);
+    cookieStore.set(sessionCookie.name, sessionCookie.serialize(), sessionCookie.attributes);
+  } else if (!session) {
+    const blankCookie = LuciaInit.createBlankSessionCookie();
+    cookieStore.set(blankCookie.name, blankCookie.serialize(), blankCookie.attributes);
+  }
+
+  return { user, session };
+}

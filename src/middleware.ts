@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { useSession } from "./server/lucia/lucia";
+import { getSession } from "./server/lucia/lucia";
+
+
 export async function middleware(req: NextRequest) {
-  const { user, session } = await useSession()
+  const session = await getSession()
 
   // Define public routes
   const publicRoutes = ["/signin", "/signup", "/api/Auth/SignIn", "/api/Auth/SignUp"];
@@ -12,7 +14,7 @@ export async function middleware(req: NextRequest) {
   }
 
   // Redirect to signin if the user is not authenticated
-  if (!user && !session) {
+  if (!session?.user && !session?.session) {
     return NextResponse.redirect(new URL("/signin", req.url));
   }
 

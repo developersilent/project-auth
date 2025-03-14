@@ -2,7 +2,7 @@ import { Check, X } from "lucide-react"
 import { toast } from "sonner"
 
 
-export const SuccessToast = (msg: String) => {
+export const SuccessToast = (msg: string) => {
   return (
     toast.custom((id) => (
       <div className="flex items-center gap-3 rounded-xl bg-muted py-1.5 px-4 outline-1 outline-green-50 shadow-lg w-fit" key={id}>
@@ -21,7 +21,7 @@ export const SuccessToast = (msg: String) => {
 
 
 
-export const ErrorToast = (msg: String) => {
+export const ErrorToast = (msg: string) => {
   return (
     toast.custom((id) => (
       <div className="flex items-center gap-3 rounded-xl bg-muted py-1.5 px-4 outline-1 outline-red-50 shadow-lg w-fit" key={id}>
