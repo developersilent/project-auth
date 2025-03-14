@@ -6,5 +6,5 @@ import { createClient } from "jstack"
  * @see https://jstack.app/docs/backend/api-client
  */
 export const client = createClient<AppRouter>({
-  baseUrl: "http://192.168.0.106:3000/api",
+  baseUrl: "https://project-auth-sigma.vercel.app/api",
 })
